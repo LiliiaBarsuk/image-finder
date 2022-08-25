@@ -1,0 +1,88 @@
+import './main.css';
+import SimpleLightbox from "simplelightbox";
+// Додатковий імпорт стилів
+import "simplelightbox/dist/simple-lightbox.min.css";
+import Notiflix from 'notiflix';
+const axios = require('axios').default;
+
+
+
+const refs = {
+    form: document.querySelector('#search-form'),
+    input: document.querySelector('input'),
+    btnLoadMore: document.querySelector('.load-more'),
+    gallery: document.querySelector('.gallery')
+}
+// var lightbox = new SimpleLightbox(".gallery a", { captionDelay: 250 });
+const URL = 'https://pixabay.com/api/';
+
+refs.form.addEventListener('submit', onFormSubmit)
+
+let inputData 
+let page = 1
+let lightbox
+
+function onFormSubmit(e) {
+     e.preventDefault()
+     inputData = e.target[0].value
+     page = 1
+     refs.gallery.innerHTML = ""
+
+refs.btnLoadMore.classList.remove("is-hidden");
+   
+    fetchData(inputData, page).then((image) => {
+        const { data: { hits } } = image
+        refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits))
+        lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250 });
+
+        
+    })
+
+}
+
+async function fetchData(clientData, page) {
+    try {
+      return await axios.get(URL, {
+        params: {
+            key: '29505818-5cb88c7f65aac8c7d69f01816',
+            q: `${clientData}`,
+            image_type: 'photo',
+            orientation: 'horizontal',
+            safesearch: 'true',
+            per_page: 40,
+            page: `${page}`
+        }
+      });
+      
+    } catch (error) {
+      console.error(error);
+    }
+      
+}
+
+function createMarkup(arrayOfImg) {
+    return arrayOfImg.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+        return `<div class="photo-card">
+        <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
+        <div class="info">
+          <p class="info-item">
+            <b>Likes</b>
+            ${likes}
+          </p>
+          <p class="info-item">
+            <b>Views</b>
+            ${views}
+          </p>
+          <p class="info-item">
+            <b>Comments</b>
+            ${comments}
+          </p>
+          <p class="info-item">
+            <b>Downloads</b>
+            ${downloads}
+          </p>
+        </div>
+      </div>`
+      
+    }).join("")
+}
