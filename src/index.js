@@ -28,11 +28,13 @@ function onFormSubmit(e) {
      inputData = e.target[0].value
      page = 1
      refs.gallery.innerHTML = ""
+     
 
     fetchData(inputData, page).then((image) => {
         const { data: { hits } } = image
 
         if (hits.length === 0) {
+          refs.btnLoadMore.classList.add("is-hidden");
           Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
           return
         }
@@ -51,7 +53,11 @@ function onLoadMore() {
     fetchData(inputData, page).then((image) => {
         const { data: { hits } } = image
         let totalPage = image.data.totalHits / hits.length
-        
+        if (hits.length === 0) {
+          refs.btnLoadMore.classList.add("is-hidden");
+          Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+          return
+        }
         if (page > totalPage) {
           refs.btnLoadMore.classList.add("is-hidden");
           Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
@@ -79,7 +85,7 @@ async function fetchData(clientData, page) {
       });
       
     } catch (error) {
-      console.error(error);
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
     }
       
 }
