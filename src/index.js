@@ -17,6 +17,7 @@ const refs = {
 const URL = 'https://pixabay.com/api/';
 
 refs.form.addEventListener('submit', onFormSubmit)
+refs.btnLoadMore.addEventListener('click', onLoadMore)
 
 let inputData 
 let page = 1
@@ -28,14 +29,37 @@ function onFormSubmit(e) {
      page = 1
      refs.gallery.innerHTML = ""
 
-refs.btnLoadMore.classList.remove("is-hidden");
-   
     fetchData(inputData, page).then((image) => {
         const { data: { hits } } = image
+
+        if (hits.length === 0) {
+          Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+          return
+        }
+
         refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits))
         lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250 });
+        lightbox.refresh(); 
+        Notiflix.Notify.success(`Hooray! We found ${image.data.totalHits} images.`);
+        refs.btnLoadMore.classList.remove("is-hidden"); 
+    }) 
+}
 
+function onLoadMore() {
+     page += 1
+    
+    fetchData(inputData, page).then((image) => {
+        const { data: { hits } } = image
+        let totalPage = image.data.totalHits / hits.length
         
+        if (page > totalPage) {
+          refs.btnLoadMore.classList.add("is-hidden");
+          Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+          return
+        }
+        refs.gallery.insertAdjacentHTML('beforeend', createMarkup(hits))
+        lightbox = new SimpleLightbox('.gallery a', { captionDelay: 250 });
+        lightbox.refresh(); 
     })
 
 }
@@ -63,7 +87,7 @@ async function fetchData(clientData, page) {
 function createMarkup(arrayOfImg) {
     return arrayOfImg.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `<div class="photo-card">
-        <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
+        <a href="${largeImageURL}" class="gallery-link"><img src="${webformatURL}" class='gallery-img' alt="${tags}" loading="lazy" /></a>
         <div class="info">
           <p class="info-item">
             <b>Likes</b>
@@ -86,3 +110,5 @@ function createMarkup(arrayOfImg) {
       
     }).join("")
 }
+
+

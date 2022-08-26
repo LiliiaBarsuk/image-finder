@@ -3,7 +3,8 @@
 }
 
 p, 
-ul {
+ul,
+div {
   margin: 0;
   padding: 0;
 }
@@ -13,10 +14,14 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fafafa;
+  background-image: radial-gradient(circle at -5.75% 35.06%, #ffdbbb 0, #ffddb6 5.56%, #ffe0b2 11.11%, #ffe3af 16.67%, #ffe5ad 22.22%, #ffe8ad 27.78%, #f8ebad 33.33%, #f0edaf 38.89%, #e7f0b1 44.44%, #def2b5 50%, #d5f4ba 55.56%, #cbf6bf 61.11%, #c2f7c6 66.67%, #b9f9cd 72.22%, #b0fad5 77.78%, #a8fbdd 83.33%, #a1fbe5 88.89%, #9afced 94.44%, #95fcf6 100%);
   color: #212121;
   line-height: 1.5;
-  padding: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: auto;
+  padding-right: auto;
+
 
 }
 
@@ -33,3 +38,83 @@ body {
     clip: rect(0 0 0 0);
     overflow: hidden;
   }
+
+.search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.input {
+  min-width: 250px;
+  height: 30px;
+  margin-right: 5px;
+  border: 1px solid rgba(33, 33, 33, 0.2);
+  border-radius: 5px;
+  background-image: inherit;
+}
+.button {
+  width: 100px;
+  height: 30px;
+  border: 1px solid rgba(33, 33, 33, 0.2);
+  border-radius: 5px;
+  background-image: radial-gradient(circle at 68.99% 50%, #c8f7cc 0, #bff5ca 25%, #b5f2c9 50%, #abefc8 75%, #a1edc8 100%);
+
+}
+
+.gallery {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 15px;
+   grid-row-gap: 15px;
+ 
+  
+}
+
+.photo-card {
+
+  border-radius: 0px 0px 4px 4px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12),
+    0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-link {
+  width: 100%;
+  
+}
+
+.gallery-img {
+  display: block;
+  width: 100%;
+  height: 80%;
+}
+
+.info {
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-image: radial-gradient(circle at -5.75% 35.06%, #ffdbbb 0, #ffddb6 5.56%, #ffe0b2 11.11%, #ffe3af 16.67%, #ffe5ad 22.22%, #ffe8ad 27.78%, #f8ebad 33.33%, #f0edaf 38.89%, #e7f0b1 44.44%, #def2b5 50%, #d5f4ba 55.56%, #cbf6bf 61.11%, #c2f7c6 66.67%, #b9f9cd 72.22%, #b0fad5 77.78%, #a8fbdd 83.33%, #a1fbe5 88.89%, #9afced 94.44%, #95fcf6 100%);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+.load-more {
+  display: block;
+ margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 200px;
+  height: 40px;
+}
+
